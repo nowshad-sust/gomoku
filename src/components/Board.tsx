@@ -3,6 +3,13 @@ import './board.scss';
 
 const size = 15;
 
+type Col = {
+    checked: boolean;
+    player: undefined | number;
+};
+type Row = Col[];
+type Board = Row[];
+
 const Cross = () => (
     <img
         alt="cross"
@@ -17,27 +24,58 @@ const Circle = () => (
     />
 );
 
-const Block: FC = () => {
-    const [checked, setChecked] = useState(false);
+type BlockProps = {
+    checked: boolean;
+    player: number | undefined;
+    onCheck: () => void;
+};
+
+const Block = ({ checked, player, onCheck }: BlockProps) => {
     return (
-        <div onClick={() => setChecked(true)} className={`block ${checked ? 'checked' : ''}`}>
-            {checked ? <Circle /> : <Cross />}
+        <div className={`block ${checked ? 'checked' : ''}`} onClick={() => !checked && onCheck()}>
+            {player === 1 ? <Circle /> : player ? <Cross /> : ''}
         </div>
     );
 };
 
 const Board: FC = () => {
-    const grid = Array(size)
-        .fill(undefined)
-        .map((_, rowIndex) => (
-            <div key={`row-${rowIndex}`} className="row">
-                {Array(size)
+    const [board, setBoard] = useState<Board>(
+        Array(size)
+            .fill(undefined)
+            .map(() =>
+                Array(size)
                     .fill(undefined)
-                    .map((_, colIndex) => (
-                        <Block key={`block ${rowIndex}-${colIndex}`} />
-                    ))}
-            </div>
-        ));
+                    .map(() => ({ checked: false, player: undefined })),
+            ),
+    );
+
+    const [player, setPlayer] = useState<number>(1);
+
+    const checkBlock = (rowIndexParam: number, colIndexParam: number, player: number) => {
+        setBoard((board: Board) =>
+            board.map((row: Row, rowIndex: number) =>
+                rowIndex === rowIndexParam
+                    ? row.map((col: Col, colIndex: number) =>
+                          colIndex === colIndexParam ? { checked: true, player } : col,
+                      )
+                    : row,
+            ),
+        );
+        setPlayer((player) => (player === 1 ? 2 : 1));
+    };
+
+    const grid = board.map((row, rowIndex) => (
+        <div key={`row-${rowIndex}`} className="row">
+            {row.map((col, colIndex) => (
+                <Block
+                    key={`block ${rowIndex}-${colIndex}`}
+                    checked={col.checked}
+                    player={col.player}
+                    onCheck={() => checkBlock(rowIndex, colIndex, player)}
+                />
+            ))}
+        </div>
+    ));
     return <div className="board">{grid}</div>;
 };
 
