@@ -1,0 +1,24 @@
+.board {
+    display: flex;
+    flex-direction: column;
+
+    .row {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .block {
+        height: 50px;
+        width: 50px;
+        background-color: #14bdac;
+        border: 1px solid #0aa191;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &.checked:hover {
+            cursor: auto;
+        }
+    }
+}
