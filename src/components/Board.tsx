@@ -61,7 +61,27 @@ const Board: FC = () => {
                     : row,
             ),
         );
+        checkGame(rowIndexParam, colIndexParam, player);
         setPlayer((player) => (player === 1 ? 2 : 1));
+    };
+
+    const checkGame = (rowIndexParam: number, colIndexParam: number, player: number) => {
+        const regex = new RegExp(`(${player}{5,5})`, 'gi');
+        // horizontal
+        const horizontalWin = regex.test(board[rowIndexParam].map((col) => col.player || 'x').join(''));
+
+        // vertical
+        const transposedColumn = board.map((x) => x[colIndexParam]);
+        const verticalWin = regex.test(transposedColumn.map((col) => col.player || 'x').join(''));
+
+        // diagonal
+        // find both of the diagonal array and check the same as horizontal
+        // for (i = rowIndexParam, j = colIndexParam; )
+
+        console.log({
+            horizontalWin,
+            verticalWin,
+        });
     };
 
     const grid = board.map((row, rowIndex) => (
