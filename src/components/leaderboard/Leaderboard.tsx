@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Cross, Circle, Equal } from '../Commons';
 import { setPlayers } from '../../store/actions';
 
@@ -11,26 +11,24 @@ const Leaderboard: FC = () => {
     const [circlePlayer, setCirclePlayer] = useState('');
     const {
         currentPlayer,
+        isGameRunning,
         players: { cross, circle },
         leaderboard: { cross: crossWin, circle: circleWin, draw: drawn },
     } = useSelector((state: RootState) => state);
-    const dispacth = useDispatch();
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Enter') {
-            dispacth(
-                setPlayers({
-                    cross: crossPlayer,
-                    circle: circlePlayer,
-                }),
-            );
+            setPlayers({
+                cross: crossPlayer,
+                circle: circlePlayer,
+            });
         }
     };
 
     return (
         <div className="leaderboard">
             <div className="players">
-                <div className={`player ${currentPlayer === 1 ? 'active' : ''}`}>
+                <div className={`player ${isGameRunning && currentPlayer === 1 ? 'active' : ''}`}>
                     <Circle />
                     {circle ? (
                         <div>
@@ -45,7 +43,7 @@ const Leaderboard: FC = () => {
                         />
                     )}
                 </div>
-                <div className={`player ${currentPlayer === 2 ? 'active' : ''}`}>
+                <div className={`player ${isGameRunning && currentPlayer === 2 ? 'active' : ''}`}>
                     <Cross />
                     {cross ? (
                         <div>

@@ -1,5 +1,13 @@
 import { InitialStateType } from './types';
-import { SET_BOARD, SET_PLAYERS, SET_LEADERBOARD, SET_CURRENT_PLAYER, BOARD_SIZE } from './consts';
+import {
+    SET_BOARD,
+    SET_PLAYERS,
+    SET_LEADERBOARD,
+    SET_CURRENT_PLAYER,
+    SET_IS_GAME_RUNNING,
+    BOARD_SIZE,
+    SET_WINNER,
+} from './consts';
 
 const initialState: InitialStateType = {
     board: Array(BOARD_SIZE).fill(Array(BOARD_SIZE).fill(undefined)),
@@ -8,6 +16,8 @@ const initialState: InitialStateType = {
         circle: '',
     },
     currentPlayer: 1,
+    isGameRunning: false,
+    winner: undefined,
     leaderboard: {
         cross: 0,
         circle: 0,
@@ -31,6 +41,16 @@ const reducer = (state = initialState, action: { type: string; payload: any }): 
             return {
                 ...state,
                 currentPlayer: action.payload,
+            };
+        case SET_IS_GAME_RUNNING:
+            return {
+                ...state,
+                isGameRunning: action.payload,
+            };
+        case SET_WINNER:
+            return {
+                ...state,
+                winner: action.payload,
             };
         case SET_LEADERBOARD:
             return {

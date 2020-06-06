@@ -5,6 +5,7 @@ import { Circle, Cross } from '../Commons';
 import { RootState } from '../../store/index';
 import { setCurrentPlayer, setBoard, checkGame } from '../../store/actions';
 import { RowType, ColType } from '../../store/types';
+import Overlay from './Overlay';
 
 type BlockProps = {
     player: number | undefined;
@@ -48,7 +49,12 @@ const Board: FC = () => {
             ))}
         </div>
     ));
-    return <div className="board">{grid}</div>;
+    return (
+        <div className="board">
+            <div className="grid">{grid}</div>
+            <Overlay />
+        </div>
+    );
 };
 
 export default Board;
