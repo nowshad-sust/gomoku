@@ -3,10 +3,7 @@ import './board.scss';
 
 const size = 15;
 
-type Col = {
-    checked: boolean;
-    player: undefined | number;
-};
+type Col = undefined | number; // player number
 type Row = Col[];
 type Board = Row[];
 
@@ -25,14 +22,13 @@ const Circle = () => (
 );
 
 type BlockProps = {
-    checked: boolean;
     player: number | undefined;
     onCheck: () => void;
 };
 
-const Block = ({ checked, player, onCheck }: BlockProps) => {
+const Block = ({ player, onCheck }: BlockProps) => {
     return (
-        <div className={`block ${checked ? 'checked' : ''}`} onClick={() => !checked && onCheck()}>
+        <div className={`block ${player ? 'checked' : ''}`} onClick={() => !player && onCheck()}>
             {player === 1 ? <Circle /> : player ? <Cross /> : ''}
         </div>
     );
@@ -42,11 +38,7 @@ const Board: FC = () => {
     const [board, setBoard] = useState<Board>(
         Array(size)
             .fill(undefined)
-            .map(() =>
-                Array(size)
-                    .fill(undefined)
-                    .map(() => ({ checked: false, player: undefined })),
-            ),
+            .map(() => Array(size).fill(undefined)),
     );
 
     const [player, setPlayer] = useState<number>(1);
@@ -55,9 +47,7 @@ const Board: FC = () => {
         setBoard((board: Board) =>
             board.map((row: Row, rowIndex: number) =>
                 rowIndex === rowIndexParam
-                    ? row.map((col: Col, colIndex: number) =>
-                          colIndex === colIndexParam ? { checked: true, player } : col,
-                      )
+                    ? row.map((col: Col, colIndex: number) => (colIndex === colIndexParam ? player : col))
                     : row,
             ),
         );
@@ -66,21 +56,75 @@ const Board: FC = () => {
     };
 
     const checkGame = (rowIndexParam: number, colIndexParam: number, player: number) => {
-        const regex = new RegExp(`(${player}{5,5})`, 'gi');
+        const isWinner = (row: Row) => {
+            const regex = new RegExp(`(${player}{5,5})`, 'gi');
+            return regex.test(row.map((col) => col || 'x').join(''));
+        };
+
         // horizontal
-        const horizontalWin = regex.test(board[rowIndexParam].map((col) => col.player || 'x').join(''));
+        const horizontalWin = isWinner(board[rowIndexParam]);
 
         // vertical
         const transposedColumn = board.map((x) => x[colIndexParam]);
-        const verticalWin = regex.test(transposedColumn.map((col) => col.player || 'x').join(''));
+        const verticalWin = isWinner(transposedColumn);
 
         // diagonal
-        // find both of the diagonal array and check the same as horizontal
-        // for (i = rowIndexParam, j = colIndexParam; )
+        // find both of the diagonal array
+        const diagonals = (row: number, col: number) => {
+            const maxIndex = board.length - 1;
+            let topLeftCol = 0;
+            let topLeftRow = 0;
+            let topRightCol = maxIndex;
+            let topRightRow = 0;
+
+            if (row + col < maxIndex) {
+                topRightCol = row + col;
+                topRightRow = 0;
+            } else if (row + col > maxIndex) {
+                topRightCol = maxIndex;
+                topRightRow = col + row - maxIndex;
+            }
+
+            if (row > col) {
+                topLeftCol = 0;
+                topLeftRow = row - col;
+            } else if (col > row) {
+                topLeftCol = col - row;
+                topLeftRow = 0;
+            }
+
+            const leftToRight = [];
+            for (let i = 0; i <= maxIndex; i++) {
+                if (topLeftRow > maxIndex || topLeftCol > maxIndex) {
+                    break;
+                }
+                leftToRight.push(board[topLeftRow][topLeftCol]);
+                topLeftRow += 1;
+                topLeftCol += 1;
+            }
+
+            const rightToLeft = [];
+            for (let i = 0; i <= maxIndex; i++) {
+                if (topRightRow > maxIndex || topRightCol < 0) {
+                    break;
+                }
+                rightToLeft.push(board[topRightRow][topRightCol]);
+                topRightRow += 1;
+                topRightCol -= 1;
+            }
+
+            return { leftToRight, rightToLeft };
+        };
+
+        const { leftToRight, rightToLeft } = diagonals(rowIndexParam, colIndexParam);
+
+        const leftToRightWin = isWinner(leftToRight);
+        const rightToLeftWin = isWinner(rightToLeft);
 
         console.log({
             horizontalWin,
             verticalWin,
+            diagonalWin: leftToRightWin || rightToLeftWin,
         });
     };
 
@@ -89,8 +133,7 @@ const Board: FC = () => {
             {row.map((col, colIndex) => (
                 <Block
                     key={`block ${rowIndex}-${colIndex}`}
-                    checked={col.checked}
-                    player={col.player}
+                    player={col}
                     onCheck={() => checkBlock(rowIndex, colIndex, player)}
                 />
             ))}
