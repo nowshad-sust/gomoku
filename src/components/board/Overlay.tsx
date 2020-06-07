@@ -1,15 +1,20 @@
 import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/index';
 import { Circle, Cross } from '../Commons';
+import { newGame } from '../../store/actions';
 
 const Overlay: FC = () => {
     const { isGameRunning, winner } = useSelector((state: RootState) => state);
+    const dispatch = useDispatch();
 
     const winnerText = (
         <div className="winner-text">
-            {winner === 1 ? <Circle /> : <Cross />}
-            <h3>Congratulations!!!</h3>
+            <div>
+                {winner === 1 ? <Circle /> : <Cross />}
+                <h3>Congratulations!!!</h3>
+            </div>
+            <button onClick={() => dispatch(newGame())}>New Game</button>
         </div>
     );
     return (

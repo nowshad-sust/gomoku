@@ -45,6 +45,7 @@
 
         .winner-text {
             display: flex;
+            flex-direction: column;
             background-color: grey;
             color: white;
             align-items: center;
@@ -56,6 +57,26 @@
                 width: 35px;
                 height: 35px;
                 margin-right: 10px;
+            }
+
+            div {
+                display: flex;
+                align-items: center;
+            }
+
+            button {
+                display: block;
+                height: 30px;
+                border-radius: 5px;
+                background-color: white;
+                color: #0aa191;
+                font-weight: 500;
+                font-size: 15px;
+                outline: none;
+
+                &:hover {
+                    cursor: pointer;
+                }
             }
         }
 

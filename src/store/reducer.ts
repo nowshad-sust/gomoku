@@ -9,6 +9,8 @@ import {
     INCREMENT_CHECKED_BLOCKS,
     BOARD_SIZE,
     SET_WINNER,
+    GAME_OVER,
+    NEW_GAME,
 } from './consts';
 
 const initialState: InitialStateType = {
@@ -65,10 +67,29 @@ const reducer = (state = initialState, action: { type: string; payload?: any }):
                 ...state,
                 winner: action.payload,
             };
+        case GAME_OVER:
+            return {
+                ...state,
+                isGameRunning: false,
+                winner: action.payload,
+                leaderboard: {
+                    cross: action.payload === 2 ? state.leaderboard.cross + 1 : state.leaderboard.cross,
+                    circle: action.payload === 1 ? state.leaderboard.circle + 1 : state.leaderboard.circle,
+                },
+            };
         case SET_LEADERBOARD:
             return {
                 ...state,
                 leaderboard: action.payload,
+            };
+        case NEW_GAME:
+            return {
+                ...state,
+                boardSize: BOARD_SIZE,
+                board: initialState.board,
+                isGameRunning: true,
+                checkedBlocks: 0,
+                winner: undefined,
             };
         default:
             return state;

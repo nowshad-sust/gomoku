@@ -5,11 +5,13 @@ import {
     SET_CURRENT_PLAYER,
     SET_IS_GAME_RUNNING,
     INCREMENT_CHECKED_BLOCKS,
+    SET_BOARD_SIZE,
     SET_WINNER,
+    GAME_OVER,
+    NEW_GAME,
 } from './consts';
 import { Players, Leaderboard, CurrentPlayer, BoardType, RowType, Winner, GameRunning, BoardSize } from './types';
 import store from './index';
-import { SET_BOARD_SIZE } from './consts';
 
 const { dispatch, getState } = store;
 
@@ -25,15 +27,13 @@ export const checkGame = (rowIndexParam: number, colIndexParam: number, player: 
 
     // horizontal
     if (isWinner(board[rowIndexParam])) {
-        dispatch(setIsGameRunning(false));
-        return dispatch(setWinner(player));
+        return dispatch(gameOver(player));
     }
 
     // vertical
     const transposedColumn = board.map((x) => x[colIndexParam]);
     if (isWinner(transposedColumn)) {
-        dispatch(setIsGameRunning(false));
-        return dispatch(setWinner(player));
+        return dispatch(gameOver(player));
     }
 
     // top-left to bottom-right
@@ -64,8 +64,7 @@ export const checkGame = (rowIndexParam: number, colIndexParam: number, player: 
     };
 
     if (isWinner(TL2BR(rowIndexParam, colIndexParam))) {
-        dispatch(setIsGameRunning(false));
-        return dispatch(setWinner(player));
+        return dispatch(gameOver(player));
     }
 
     // top-right to bottom-left
@@ -96,8 +95,7 @@ export const checkGame = (rowIndexParam: number, colIndexParam: number, player: 
     };
 
     if (isWinner(TR2BL(rowIndexParam, colIndexParam))) {
-        dispatch(setIsGameRunning(false));
-        return dispatch(setWinner(player));
+        return dispatch(gameOver(player));
     }
 
     // increase the board size when the board is almost full
@@ -152,6 +150,15 @@ export const setWinner = (payload: Winner) => ({
     payload,
 });
 
+export const gameOver = (payload: Winner) => ({
+    type: GAME_OVER,
+    payload,
+});
+
 export const incrementCheckedBlocks = () => ({
     type: INCREMENT_CHECKED_BLOCKS,
+});
+
+export const newGame = () => ({
+    type: NEW_GAME,
 });
