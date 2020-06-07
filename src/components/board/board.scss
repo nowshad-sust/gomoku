@@ -64,6 +64,12 @@
                 align-items: center;
             }
 
+            p {
+                margin: 0;
+                margin-bottom: 21px;
+                font-size: 20px;
+            }
+
             button {
                 display: block;
                 height: 30px;
@@ -73,9 +79,13 @@
                 font-weight: 500;
                 font-size: 15px;
                 outline: none;
+                padding: 5px 20px;
 
                 &:hover {
                     cursor: pointer;
+                    background-color: #0aa191;
+                    color: white;
+                    transition: color 0.3s linear;
                 }
             }
         }

@@ -1,4 +1,4 @@
-export const BOARD_SIZE = 10;
+export const BOARD_SIZE = 15;
 
 export const SET_BOARD_SIZE = 'SET_BOARD_SIZE';
 export const SET_BOARD = 'SET_BOARD';

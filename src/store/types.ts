@@ -1,8 +1,4 @@
-export interface Players {
-    cross: string;
-    circle: string;
-}
-
+// State types
 export type ColType = undefined | number; // player number
 export type RowType = ColType[];
 export type BoardType = RowType[];
@@ -12,6 +8,11 @@ export type BoardSize = number;
 
 export type CurrentPlayer = number;
 export type GameRunning = boolean;
+
+export interface Players {
+    cross: string;
+    circle: string;
+}
 
 export interface Leaderboard {
     cross: number;
@@ -27,4 +28,10 @@ export interface InitialStateType {
     checkedBlocks: CheckedBlock;
     winner: Winner;
     leaderboard: Leaderboard;
+}
+
+// action types
+export interface ActionType {
+    type: string;
+    payload: BoardType | BoardSize | Players | CurrentPlayer | Leaderboard | GameRunning | Winner;
 }

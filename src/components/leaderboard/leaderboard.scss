@@ -17,6 +17,8 @@
                 background-color: #14bdac;
                 border: 1px solid #0aa191;
                 margin-right: 10px;
+                border-radius: 50%;
+                padding: 2px;
             }
             input {
                 height: 30px;
@@ -29,8 +31,9 @@
 
             &.active {
                 background-color: #14bdac;
-                padding: 5px;
+                padding: 5px 10px;
                 color: white;
+                border-radius: 5px;
                 img {
                     border: none;
                 }

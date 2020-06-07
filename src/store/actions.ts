@@ -16,7 +16,7 @@ import store from './index';
 const { dispatch, getState } = store;
 
 export const checkGame = (rowIndexParam: number, colIndexParam: number, player: number) => {
-    dispatch(incrementCheckedBlocks());
+    incrementCheckedBlocks();
 
     const { board, boardSize, checkedBlocks } = getState();
 
@@ -27,13 +27,13 @@ export const checkGame = (rowIndexParam: number, colIndexParam: number, player: 
 
     // horizontal
     if (isWinner(board[rowIndexParam])) {
-        return dispatch(gameOver(player));
+        return gameOver(player);
     }
 
     // vertical
     const transposedColumn = board.map((x) => x[colIndexParam]);
     if (isWinner(transposedColumn)) {
-        return dispatch(gameOver(player));
+        return gameOver(player);
     }
 
     // top-left to bottom-right
@@ -64,7 +64,7 @@ export const checkGame = (rowIndexParam: number, colIndexParam: number, player: 
     };
 
     if (isWinner(TL2BR(rowIndexParam, colIndexParam))) {
-        return dispatch(gameOver(player));
+        return gameOver(player);
     }
 
     // top-right to bottom-left
@@ -95,30 +95,32 @@ export const checkGame = (rowIndexParam: number, colIndexParam: number, player: 
     };
 
     if (isWinner(TR2BL(rowIndexParam, colIndexParam))) {
-        return dispatch(gameOver(player));
+        return gameOver(player);
     }
 
     // increase the board size when the board is almost full
     if (checkedBlocks === boardSize * (boardSize - 1)) {
-        dispatch(increateBoardSize(boardSize + 5));
+        increateBoardSize(boardSize + 5);
 
         // increase board by 5 rows
         const newRows = Array(5).fill(Array(boardSize + 5).fill(undefined));
         const newBoard = [...board.map((row) => [...row, ...Array(5).fill(undefined)]), ...newRows];
 
-        dispatch(setBoard(newBoard));
+        setBoard(newBoard);
     }
 };
 
-export const setBoard = (payload: BoardType) => ({
-    type: SET_BOARD,
-    payload,
-});
+export const setBoard = (payload: BoardType) =>
+    dispatch({
+        type: SET_BOARD,
+        payload,
+    });
 
-export const increateBoardSize = (payload: BoardSize) => ({
-    type: SET_BOARD_SIZE,
-    payload,
-});
+export const increateBoardSize = (payload: BoardSize) =>
+    dispatch({
+        type: SET_BOARD_SIZE,
+        payload,
+    });
 
 export const setPlayers = (payload: Players) => {
     dispatch({
@@ -130,35 +132,42 @@ export const setPlayers = (payload: Players) => {
     }
 };
 
-export const setCurrentPlayer = (payload: CurrentPlayer) => ({
-    type: SET_CURRENT_PLAYER,
-    payload,
-});
+export const setCurrentPlayer = (payload: CurrentPlayer) =>
+    dispatch({
+        type: SET_CURRENT_PLAYER,
+        payload,
+    });
 
-export const setLeaderboard = (payload: Leaderboard) => ({
-    type: SET_LEADERBOARD,
-    payload,
-});
+export const setLeaderboard = (payload: Leaderboard) =>
+    dispatch({
+        type: SET_LEADERBOARD,
+        payload,
+    });
 
-export const setIsGameRunning = (payload: GameRunning) => ({
-    type: SET_IS_GAME_RUNNING,
-    payload,
-});
+export const setIsGameRunning = (payload: GameRunning) =>
+    dispatch({
+        type: SET_IS_GAME_RUNNING,
+        payload,
+    });
 
-export const setWinner = (payload: Winner) => ({
-    type: SET_WINNER,
-    payload,
-});
+export const setWinner = (payload: Winner) =>
+    dispatch({
+        type: SET_WINNER,
+        payload,
+    });
 
-export const gameOver = (payload: Winner) => ({
-    type: GAME_OVER,
-    payload,
-});
+export const gameOver = (payload: Winner) =>
+    dispatch({
+        type: GAME_OVER,
+        payload,
+    });
 
-export const incrementCheckedBlocks = () => ({
-    type: INCREMENT_CHECKED_BLOCKS,
-});
+export const incrementCheckedBlocks = () =>
+    dispatch({
+        type: INCREMENT_CHECKED_BLOCKS,
+    });
 
-export const newGame = () => ({
-    type: NEW_GAME,
-});
+export const startNewGame = () =>
+    dispatch({
+        type: NEW_GAME,
+    });

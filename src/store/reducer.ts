@@ -30,7 +30,7 @@ const initialState: InitialStateType = {
     },
 };
 
-const reducer = (state = initialState, action: { type: string; payload?: any }): InitialStateType => {
+const reducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
         case SET_BOARD_SIZE:
             return {

@@ -1,12 +1,11 @@
 import React, { FC } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store/index';
-import { Circle, Cross } from '../Commons';
-import { newGame } from '../../store/actions';
+import { Circle, Cross } from '../Icons';
+import { startNewGame } from '../../store/actions';
 
 const Overlay: FC = () => {
     const { isGameRunning, winner } = useSelector((state: RootState) => state);
-    const dispatch = useDispatch();
 
     const winnerText = (
         <div className="winner-text">
@@ -14,12 +13,14 @@ const Overlay: FC = () => {
                 {winner === 1 ? <Circle /> : <Cross />}
                 <h3>Congratulations!!!</h3>
             </div>
-            <button onClick={() => dispatch(newGame())}>New Game</button>
+            <p>You have just won the game!</p>
+            <button onClick={startNewGame}>New Game</button>
         </div>
     );
+
     return (
         <div className={`overlay ${isGameRunning ? 'hide' : 'show'}`}>
-            {!isGameRunning && !winner && 'Please enter player names to start the game'}
+            {!isGameRunning && !winner && <h3>Please enter player names to start the game</h3>}
             {winner && winnerText}
         </div>
     );

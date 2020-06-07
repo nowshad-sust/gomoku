@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Cross, Circle } from '../Commons';
+import { Cross, Circle } from '../Icons';
 import { RootState } from '../../store/index';
 import { setPlayers } from '../../store/actions';
 
