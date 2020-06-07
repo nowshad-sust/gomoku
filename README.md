@@ -25,6 +25,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - SASS/SCSS
 - Husky
 
+## How to run
+- Prerequites: `NodeJS` && working `npm`.
+- Clone The repository https://github.com/nowshad-sust/gomoku.git
+- Go to the project root directory`cd gomoku`.
+- Run `npm install` to download dependencies.
+- Running `npm start` should open the app in on port `3000` by default.
+
+
 ## Available Scripts
 
 In the project directory, you can run:
