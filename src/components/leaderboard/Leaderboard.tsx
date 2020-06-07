@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Cross, Circle, Equal } from '../Commons';
+import { Cross, Circle } from '../Commons';
+import { RootState } from '../../store/index';
 import { setPlayers } from '../../store/actions';
 
 import './leaderboard.scss';
-import { RootState } from '../../store/index';
 
 const Leaderboard: FC = () => {
     const [crossPlayer, setCrossPlayer] = useState('');
@@ -13,7 +13,7 @@ const Leaderboard: FC = () => {
         currentPlayer,
         isGameRunning,
         players: { cross, circle },
-        leaderboard: { cross: crossWin, circle: circleWin, draw: drawn },
+        leaderboard: { cross: crossWin, circle: circleWin },
     } = useSelector((state: RootState) => state);
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -58,12 +58,6 @@ const Leaderboard: FC = () => {
                         />
                     )}
                 </div>
-                {cross && circle && (
-                    <div className="player">
-                        <Equal />
-                        <div>Drawn: {drawn}</div>
-                    </div>
-                )}
             </div>
         </div>
     );

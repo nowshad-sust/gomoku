@@ -1,12 +1,22 @@
-import { SET_BOARD, SET_PLAYERS, SET_LEADERBOARD, SET_CURRENT_PLAYER, SET_IS_GAME_RUNNING, SET_WINNER } from './consts';
-import { Players, Leaderboard, CurrentPlayer, BoardType, RowType, Winner, GameRunning } from './types';
+import {
+    SET_BOARD,
+    SET_PLAYERS,
+    SET_LEADERBOARD,
+    SET_CURRENT_PLAYER,
+    SET_IS_GAME_RUNNING,
+    INCREMENT_CHECKED_BLOCKS,
+    SET_WINNER,
+} from './consts';
+import { Players, Leaderboard, CurrentPlayer, BoardType, RowType, Winner, GameRunning, BoardSize } from './types';
 import store from './index';
+import { SET_BOARD_SIZE } from './consts';
 
 const { dispatch, getState } = store;
 
-// TODO: Check draw
 export const checkGame = (rowIndexParam: number, colIndexParam: number, player: number) => {
-    const board = getState().board;
+    dispatch(incrementCheckedBlocks());
+
+    const { board, boardSize, checkedBlocks } = getState();
 
     const isWinner = (row: RowType) => {
         const regex = new RegExp(`(${player}{5,5})`, 'gi');
@@ -89,10 +99,26 @@ export const checkGame = (rowIndexParam: number, colIndexParam: number, player: 
         dispatch(setIsGameRunning(false));
         return dispatch(setWinner(player));
     }
+
+    // increase the board size when the board is almost full
+    if (checkedBlocks === boardSize * (boardSize - 1)) {
+        dispatch(increateBoardSize(boardSize + 5));
+
+        // increase board by 5 rows
+        const newRows = Array(5).fill(Array(boardSize + 5).fill(undefined));
+        const newBoard = [...board.map((row) => [...row, ...Array(5).fill(undefined)]), ...newRows];
+
+        dispatch(setBoard(newBoard));
+    }
 };
 
 export const setBoard = (payload: BoardType) => ({
     type: SET_BOARD,
+    payload,
+});
+
+export const increateBoardSize = (payload: BoardSize) => ({
+    type: SET_BOARD_SIZE,
     payload,
 });
 
@@ -124,4 +150,8 @@ export const setIsGameRunning = (payload: GameRunning) => ({
 export const setWinner = (payload: Winner) => ({
     type: SET_WINNER,
     payload,
+});
+
+export const incrementCheckedBlocks = () => ({
+    type: INCREMENT_CHECKED_BLOCKS,
 });

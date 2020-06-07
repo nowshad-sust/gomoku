@@ -1,15 +1,18 @@
 import { InitialStateType } from './types';
 import {
+    SET_BOARD_SIZE,
     SET_BOARD,
     SET_PLAYERS,
     SET_LEADERBOARD,
     SET_CURRENT_PLAYER,
     SET_IS_GAME_RUNNING,
+    INCREMENT_CHECKED_BLOCKS,
     BOARD_SIZE,
     SET_WINNER,
 } from './consts';
 
 const initialState: InitialStateType = {
+    boardSize: BOARD_SIZE,
     board: Array(BOARD_SIZE).fill(Array(BOARD_SIZE).fill(undefined)),
     players: {
         cross: '',
@@ -17,16 +20,21 @@ const initialState: InitialStateType = {
     },
     currentPlayer: 1,
     isGameRunning: false,
+    checkedBlocks: 0,
     winner: undefined,
     leaderboard: {
         cross: 0,
         circle: 0,
-        draw: 0,
     },
 };
 
-const reducer = (state = initialState, action: { type: string; payload: any }): InitialStateType => {
+const reducer = (state = initialState, action: { type: string; payload?: any }): InitialStateType => {
     switch (action.type) {
+        case SET_BOARD_SIZE:
+            return {
+                ...state,
+                boardSize: action.payload,
+            };
         case SET_BOARD:
             return {
                 ...state,
@@ -46,6 +54,11 @@ const reducer = (state = initialState, action: { type: string; payload: any }): 
             return {
                 ...state,
                 isGameRunning: action.payload,
+            };
+        case INCREMENT_CHECKED_BLOCKS:
+            return {
+                ...state,
+                checkedBlocks: state.checkedBlocks + 1,
             };
         case SET_WINNER:
             return {
