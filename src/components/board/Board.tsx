@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
-import { Circle, Cross } from '../Icons';
-import { RootState } from '../../store/index';
-import { setCurrentPlayer, setBoard, checkGame } from '../../store/actions';
+import { useSelector, useDispatch } from 'react-redux';
 import { RowType, ColType } from '../../store/types';
+import { selectGame, setBoard, checkGame } from '../../store/gameReducer';
+import { selectPlayer, setCurrentPlayer } from '../../store/playerReducer';
+import { Circle, Cross } from '../Icons';
 import Overlay from './Overlay';
 import './board.scss';
 
@@ -21,18 +21,22 @@ const Block = ({ player, onCheck }: BlockProps) => {
 };
 
 const Board: FC = () => {
-    const { board, currentPlayer } = useSelector((state: RootState) => state);
+    const { board } = useSelector(selectGame);
+    const { currentPlayer } = useSelector(selectPlayer);
+    const dispatch = useDispatch();
 
     const checkBlock = (rowIndexParam: number, colIndexParam: number, player: number) => {
-        setBoard(
-            board.map((row: RowType, rowIndex: number) =>
-                rowIndex === rowIndexParam
-                    ? row.map((col: ColType, colIndex: number) => (colIndex === colIndexParam ? player : col))
-                    : row,
+        dispatch(
+            setBoard(
+                board.map((row: RowType, rowIndex: number) =>
+                    rowIndex === rowIndexParam
+                        ? row.map((col: ColType, colIndex: number) => (colIndex === colIndexParam ? player : col))
+                        : row,
+                ),
             ),
         );
-        checkGame(rowIndexParam, colIndexParam, currentPlayer);
-        setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+        dispatch(checkGame(rowIndexParam, colIndexParam, currentPlayer));
+        dispatch(setCurrentPlayer(currentPlayer === 1 ? 2 : 1));
     };
 
     const grid = board.map((row, rowIndex) => (

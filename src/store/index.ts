@@ -1,15 +1,14 @@
-import { createStore, compose } from 'redux';
-import reducer from './reducer';
+import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import gameReducer from './gameReducer';
+import playerReducer from './playerReducer';
 
-declare global {
-    interface Window {
-        __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-    }
-}
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export const store = configureStore({
+    reducer: {
+        game: gameReducer,
+        player: playerReducer,
+    },
+});
 
-export const store = createStore(reducer, composeEnhancers());
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-export default store;
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;

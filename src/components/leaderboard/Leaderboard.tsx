@@ -1,27 +1,34 @@
 import React, { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectGame, setIsGameRunning } from '../../store/gameReducer';
+import { selectPlayer, setPlayers } from '../../store/playerReducer';
 import { Cross, Circle } from '../Icons';
-import { RootState } from '../../store/index';
-import { setPlayers } from '../../store/actions';
-
 import './leaderboard.scss';
 
 const Leaderboard: FC = () => {
     const [crossPlayer, setCrossPlayer] = useState('');
     const [circlePlayer, setCirclePlayer] = useState('');
+    const { isGameRunning } = useSelector(selectGame);
+    const dispatch = useDispatch();
+
     const {
         currentPlayer,
-        isGameRunning,
         players: { cross, circle },
         leaderboard: { cross: crossWin, circle: circleWin },
-    } = useSelector((state: RootState) => state);
+    } = useSelector(selectPlayer);
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Enter') {
-            setPlayers({
-                cross: crossPlayer,
-                circle: circlePlayer,
-            });
+            dispatch(
+                setPlayers({
+                    cross: crossPlayer,
+                    circle: circlePlayer,
+                }),
+            );
+
+            if (crossPlayer && circlePlayer) {
+                dispatch(setIsGameRunning(true));
+            }
         }
     };
 
