@@ -10,8 +10,8 @@ export type CurrentPlayer = number;
 export type GameRunning = boolean;
 
 export interface Players {
-    cross: string;
-    circle: string;
+    cross: string | undefined;
+    circle: string | undefined;
 }
 
 export interface Leaderboard {

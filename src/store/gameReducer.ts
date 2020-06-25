@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BoardType, BoardSize, GameRunning, CheckedBlock, Winner, RowType } from './types';
 import { AppThunk, AppDispatch, RootState } from './index';
+import { BOARD_SIZE, INCREASE_BY } from './consts';
 import { setWinner } from './playerReducer';
-import { BOARD_SIZE } from './consts';
 
 interface GameState {
     boardSize: number;
@@ -26,7 +26,7 @@ const gameSlice = createSlice({
             state.boardSize = action.payload;
         },
         increaseBoardSize: (state) => {
-            state.boardSize = state.boardSize + 5;
+            state.boardSize = state.boardSize + INCREASE_BY * 2;
         },
         setBoard: (state, action: PayloadAction<BoardType>) => {
             state.board = action.payload;
@@ -159,12 +159,12 @@ export const checkGame = (rowIndexParam: number, colIndexParam: number, player: 
 
     // increase the board size when the board is almost full
     if (checkedBlocks === boardSize * (boardSize - 1)) {
+        // increase board on all four side
+        const newCols = Array(INCREASE_BY).fill(undefined);
+        const newRows = Array(INCREASE_BY).fill(Array(boardSize + INCREASE_BY * 2).fill(undefined));
+        const newBoard = [...newRows, ...board.map((row) => [...newCols, ...row, ...newCols]), ...newRows];
+
         dispatch(increaseBoardSize());
-
-        // increase board by 5 rows
-        const newRows = Array(5).fill(Array(boardSize + 5).fill(undefined));
-        const newBoard = [...board.map((row) => [...row, ...Array(5).fill(undefined)]), ...newRows];
-
         return dispatch(setBoard(newBoard));
     }
 };

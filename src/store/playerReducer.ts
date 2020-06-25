@@ -11,8 +11,8 @@ interface PlayerState {
 
 const initialState: PlayerState = {
     players: {
-        cross: '',
-        circle: '',
+        cross: undefined,
+        circle: undefined,
     },
     currentPlayer: 1,
     winner: undefined,
