@@ -4,10 +4,10 @@
 https://codesandbox.io/s/github/nowshad-sust/gomoku
 
 ### Features
-- A 15x15 board grid board game.
-- Two players play in the same browser window.
+- A NxN grid based board board game.
+- Two players play in the same browser window in turns.
 - Players can input their names.
-- 5 in a row wins the game.
+- 5 in a row (horizontal/vertical/perpendicular) wins the game.
 - The board will exapnd when the almost all the grides are marked.
 - Game can be played in multile rounds.
 - Scorecard will show updated scores.
