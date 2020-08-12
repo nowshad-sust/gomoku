@@ -64,8 +64,8 @@ Runs a eslint check through the src folder and fixes all auto-fixable problems.
 > - [ ] Refactor actions and dispatch.
 - [ ] Typescript
 > - [ ] Add more return types.
-> - [ ] Remove any from recuder.
-> - [ ] Add action types. 
+> - [ ] Remove any from reducers.
+> - [ ] Add action types.
 - [ ] Game Algorithm
 > - [ ] Take only 9 blocks for pattern check.
 > - [ ] Optimize diagonal check.
