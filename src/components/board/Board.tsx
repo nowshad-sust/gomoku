@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RowType, ColType } from '../../store/types';
 import { selectGame, setBoard, checkGame } from '../../store/gameReducer';
@@ -20,7 +20,7 @@ const Block = ({ player, onCheck }: BlockProps) => {
     );
 };
 
-const Board: FC = () => {
+const Board: React.FC = () => {
     const { board } = useSelector(selectGame);
     const { currentPlayer } = useSelector(selectPlayer);
     const dispatch = useDispatch();

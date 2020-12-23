@@ -1,11 +1,13 @@
-import React, { FC, useState } from 'react';
+import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectGame, setIsGameRunning } from '../../store/gameReducer';
 import { selectPlayer, setPlayers } from '../../store/playerReducer';
 import { Cross, Circle } from '../Icons';
 import './leaderboard.scss';
 
-const Leaderboard: FC = () => {
+const { useState } = React;
+
+const Leaderboard: React.FC = () => {
     const [crossPlayer, setCrossPlayer] = useState('');
     const [circlePlayer, setCirclePlayer] = useState('');
     const { isGameRunning } = useSelector(selectGame);

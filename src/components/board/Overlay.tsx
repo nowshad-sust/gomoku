@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Circle, Cross } from '../Icons';
 import { selectGame, startNewGame } from '../../store/gameReducer';
 import { selectPlayer } from '../../store/playerReducer';
 
-const Overlay: FC = () => {
+const Overlay: React.FC = () => {
     const { isGameRunning } = useSelector(selectGame);
     const { winner } = useSelector(selectPlayer);
     const dispatch = useDispatch();

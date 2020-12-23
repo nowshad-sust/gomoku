@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import * as React from 'react';
 import Board from './components/board/Board';
 import Leaderboard from './components/leaderboard/Leaderboard';
 import './App.scss';
 
-const App: FC = () => {
+const App: React.FC = () => {
     return (
         <div className="App">
             <Leaderboard />
